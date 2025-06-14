@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infix to Postfix Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Handjet&display=swap" rel="stylesheet">
+  
+    <style>
+        body {
+            background-color: #000;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+            color: #000000;
+            overflow-x: hidden;
+            margin-top: 80px;
+
+        }
+
+
+
+
+        /* Navigation Bar */
+        header {
+            position: fixed; /* Keeps the header fixed at the top */
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Background color */
+            color: white; /* Text color */
+            padding: 20px 30px; /* Padding for the header */
+            display: flex; /* Flexbox layout */
+            justify-content: space-between; /* Space between left text and navigation */
+            align-items: center; /* Centers items vertically */
+            z-index: 1000; /* Stays above other elements */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */ 
+            border-top: 1px solid rgba(255, 255, 255, 0.5); /* Top border */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Bottom border */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-left: -30px;
+        }
+
+        .header-left {
+            font-size: 24px; /* Adjust font size for logo */
+            font-family: 'Geo', sans-serif; /* Apply the chosen font */
+            color: #ffffff; /* Keep the text color white or as per design */
+            letter-spacing: 1px; /* Optional: add spacing for style */
+            margin-left: 40px;
+        }
+        
+        header .logo {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 8px 20px;
+            border-radius: 5px;
+            padding-right: 30px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 219, 100, 0.596);
+            color: #000;
+            font-weight: bold;
+        }
+
+
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-top: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .container {
+            max-width: 1200px;
+            max-height: 560px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            background: rgba(90, 90, 90, 0.9); /* Slightly darker header */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-section, .output-section {
+            flex: 1;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 550px;
+        }
+        .input-section {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .output-section {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        h2 {
+            color: hsl(264, 26%, 96%);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        input, button {
+            width: 95%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            font-size: 16px;
+            cursor: pointer;
+            background-color: teal;
+            color: rgb(255, 255, 255);
+            transition: background-color 0.3s;
+            margin-bottom: 10px; /* Add space between buttons */
+            display: block;
+            line-height: 60px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            background-color: #880c0c;
+            border-radius: 10px;
+            border: 2px solid #880c0c;
+            position: center;
+            overflow: hidden;
+            margin-left: 14px;
+        }
+        button:hover {
+            background-color:#ffd700;
+            color: #0c0c0c;
+            border-color: #ffd700;
+        }
+
+
+        .button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(219, 44, 44, 0.2);
+            top: 0;
+            left: -100%;
+            transform: skewX(-25deg);
+            transition: all 0.3s;
+        }
+    
+        .button:hover::before {
+        left: 100%;
+        }
+
+
+        .result, .steps {
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .result {
+            background: #fffffffd;
+        }
+        .steps {
+            background: #f7f7f7;
+            overflow-y: auto;
+            max-height: 260px;
+            padding-top: 0px;
+        }
+        .steps h3 {
+            position: sticky;
+            top: 0;
+            background: #f7f7f7;
+            padding: 0px;
+            padding-bottom: 5px;
+            padding-top: 15px;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #000000;
+            z-index: 1; /* Ensure it's above the scrolling content */
+            border-bottom: 2px solid #080808; /* Optional: border for clarity */
+        }
+        .steps p {
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .instructions {
+            background: rgb(241, 241, 241);
+            padding: 15px;
+            margin-top: 0px;
+            border-radius: 5px;
+            font-size: 13px;
+            line-height: 1.3;
+            max-height: 450px;
+        }
+        .instructions h3 {
+            font-size: 1.2rem;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: #000000;
+        }
+        .instructions ul {
+            margin-left: 0;
+            padding: 0;
+            list-style-type: none; /* Remove bullets */
+        }
+        .instructions li {
+            margin: 5px 0;
+            padding-left: 20px; /* Optional: Adjust padding for better alignment */
+            position: relative;
+        }
+        .instructions ul ul {
+            list-style-type: disc; /* Adds bullet points (disc) to nested lists */
+            padding-left: 30px; /* Adds extra indentation for nested items */
+        }
+        .instructions li::before {
+            content: ''; /* Remove numbering from before pseudo-element */
+            position: absolute;
+            left: -20px; /* Adjust position */
+            top: 0;
+            font-weight: bold;
+            color: #33691e; /* Customize color */
+        }
+        .instructions {
+            counter-reset: step;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+
+        footer {
+            position: relative;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: #f1eaea;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">pentaCODE</div>
+        <nav>
+            <div class="dropdown">
+                <a>Projects</a>
+                <div class="dropdown-content">
+                    <a href="/movies">LinkList</a>
+                    <a href="/stack">Stack</a>
+                    <a href="/queuedequeue">Queue and Dequeue</a>
+                    <a href="/binary">Binary Tree</a>
+                    <a href="/graph">Graph</a>
+                    <a href="/bubble">Sorting</a>
+    
+                </div>
+            </div>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+      </header>
+    
+    <h1>Infix to Postfix Converter</h1>
+
+    <div class="container">
+        <!-- Input Section -->
+        <div class="input-section">
+            <h2>User Input</h2>
+            <form id="convert-form">
+                <input type="text" id="expression" placeholder="Enter infix expression (e.g., A+B*C)" required>
+                <button type="submit">Convert</button>
+            </form>
+
+            <!-- Instructions Section -->
+            <div class="instructions">
+                <h3>How to Convert Infix to Postfix</h3>
+                <ul>
+                    <li>1. Scan the infix expression from left to right.</li>
+                    <li>2. If the character is an operand, add it to the output string.</li>
+                    <li>3. If the character is an operator:
+                        <ul>
+                            <li>Pop operators from the stack with higher or equal precedence and append to the output.</li>
+                            <li>Push the current operator to the stack.</li>
+                        </ul>
+                    </li>
+                    <li>4. If the character is a left parenthesis, push it onto the stack.</li>
+                    <li>5. If the character is a right parenthesis:
+                        <ul>
+                            <li>Pop operators from the stack until a left parenthesis is encountered.</li>
+                            <li>Discard both parentheses.</li>
+                        </ul>
+                    </li>
+                    <li>6. At the end, pop all remaining operators from the stack and append to the output.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <h2>Output</h2>
+            <div class="result">
+                <h3>Postfix Expression:</h3>
+                <p id="postfix"></p>
+            </div>
+            <div class="steps">
+                <h3>Conversion Steps:</h3>
+                <div id="conversion-steps"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Event listener for form submission
+        $('#convert-form').on('submit', function(e) {
+            e.preventDefault();
+            const expression = $('#expression').val();
+
+            // AJAX request to the Flask backend
+            $.post('/convert_postfix', { expression }, function(data) {
+                // Display the postfix result
+                $('#postfix').text(data.postfix);
+
+                // Display the step-by-step process
+                let stepsHtml = '';
+                data.steps.forEach((step, index) => {
+                    stepsHtml += `<p><strong>Step ${index + 1}:</strong> ${step}</p>`;
+                });
+                $('#conversion-steps').html(stepsHtml);
+            }).fail(function(err) {
+                alert('Error: ' + err.responseJSON.error);
+            });
+        });
+    </script>
+    <footer>
+        <p>Developed by BSCPE 2-3 Group 5.</p>
+    </footer>
+</body>
+</html>

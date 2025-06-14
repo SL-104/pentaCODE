@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage | BSCPE 2-3 Group 5 Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Handjet&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto; /* Allow vertical scrolling */
+        }
+
+        .background {
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+                              linear-gradient(225deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-color: #111;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .divider {
+            border: none;
+            height: 4px;
+            background-color: #ffeb92; /* Bright yellow color */
+            margin: 40px 0;
+            width: 80%;
+            position: relative;
+            border-radius: 5px;
+        }
+
+        /* Navigation Bar */
+        header {
+            position: fixed; /* Keeps the header fixed at the top */
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Background color */
+            color: white; /* Text color */
+            padding: 20px 30px; /* Padding for the header */
+            display: flex; /* Flexbox layout */
+            justify-content: space-between; /* Space between left text and navigation */
+            align-items: center; /* Centers items vertically */
+            z-index: 1000; /* Stays above other elements */
+            transition: background-color 0.3s ease; /* Smooth transition for background color */
+            border-top: 1px solid rgba(255, 255, 255, 0.5); /* Top border */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Bottom border */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            
+        }
+
+        .header-left {
+            font-size: 24px; /* Adjust font size for logo */
+            font-family: 'Geo', sans-serif; /* Apply the chosen font */
+            color: #ffffff; /* Keep the text color white or as per design */
+            letter-spacing: 1px; /* Optional: add spacing for style */
+            margin-left: 40px;
+        }
+        /*check nalang if may function pa toh */
+        header .logo {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 8px 20px;
+            border-radius: 5px;
+            padding-right: 30px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 219, 100, 0.596);
+            color: #000;
+            font-weight: bold;
+        }
+
+
+        .description {
+            width: 40%;
+            font-size: 16px;
+            color: #555;
+            text-align: justify;
+            margin-left: -40px;
+            margin-right: 40px;
+        }
+
+        
+        /* Section Styles */
+        section {
+            width: 100%;
+            padding: 60px 20px;
+            color: white;
+            text-align: center;
+        }
+
+        #home img {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 450px;
+            height: 170px;
+            object-fit: cover;
+            transition: transform 0.3s ease; /* Smooth transition for the scale effect */
+        }
+
+        #home img:hover {
+            transform: scale(1.2); /* Scales the image on hover */
+        }
+
+
+        section h2 {
+            margin-top: 0;
+        }
+
+        section p {
+            max-width: 800px;
+            margin: auto;
+            text-align: left;
+            font-size: 20px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+        }
+        section ul {
+            list-style-position: inside; /* Optional: keeps list bullets inside the text */
+            padding-left: 0; /* Optional: removes default padding */
+        }
+
+        section li {
+            text-align: left; /* Ensures the list items are left-aligned */
+            margin: auto;
+            margin-left: 600px;
+            font-size: 20px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+        }
+
+
+        
+        /* Proje Section */
+        #projects {
+            background: url('https://media.discordapp.net/attachments/1315653090312982638/1316029175311630366/clip1.jpg?ex=67598f2e&is=67583dae&hm=669bdbca2953f24ba6b9018852978f0219426aa2f7efe56fc2b32884433ce55b&=&format=webp&width=662&height=662') no-repeat center center fixed;
+            padding: 0px 0;
+            background-size: cover; /* Ensures the image covers the entire viewport */
+            position: relative; /* Allows positioning of the overlay */
+            text-align: center;
+            color: #ffffff; /* Adjust text color for contrast */
+            margin-top: 0;
+        }
+
+        #projects::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Black transparent overlay */
+            z-index: -1; /* Places the overlay behind content */
+        }
+
+        #projects .project-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 450px;
+            height: 170px;
+            object-fit: cover;
+            transition: transform 0.3s ease; /* Smooth transition for the scale effect */
+        }
+
+        #projects .project-image:hover {
+            transform: scale(1.2); /* Scales the image on hover */
+        }
+
+        #projects .card {
+            display: block;
+            background-color: rgb(255, 248, 180);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto 20px auto;
+            margin-left: 10px; /* Space between cards on the left */
+            margin-right: 10px; /* Space between cards on the right */
+            overflow: hidden; 
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border 0.3s ease-in-out; /* Add transition for border and shadow */
+            text-decoration: none;
+            height: 400px; /* Fixed height for the card */
+            width: 100%; /* Ensure card width stays consistent */
+        }
+
+        #projects .card:hover {
+            transform: translateY(-10px); /* Lift effect on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ffdf5d; /* Glow effect on border */
+        }
+
+        #projects .card:hover {
+            box-shadow: 0 0 10px #ffdf5d, 0 0 20px #ffdf5d, 0 0 30px #ffdf5d; /* Glowing effect */
+        }
+
+        #projects .card-img {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #ccc; /* Divider between image and content */
+        }
+
+        #projects .card-content {
+            padding: 20px;
+        }
+
+        #projects .card h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #projects .card p {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        #projects .card:hover h3 {
+            color: #6a1b9a; /* Change text color on hover for added interactivity */
+        }
+
+        #projects .navigation {
+            width: 55%;
+            text-align: center;
+        }
+
+        #projects .card {
+            margin-top: 10px; /* Push the card slightly below the Navigation text */
+        }
+
+        #projects .button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 25px;
+            font-size: 16px;
+            color: white;
+            background-color: #2e0c5a;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #projects .button:hover {
+            background-color: #ec67b5;
+        }
+
+        #projects .nav-con {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 75px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+
+
+        /* About Section */
+        #about {
+            display: flex;
+            flex-direction: column; /* Stack image and content vertically */
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 10px 20px;
+            color: white;
+            width: 80%;
+            max-width: 1000px; /* Set max width for the carousel */
+            margin: 0 auto;
+        }
+        #about .about-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 450px;
+            height: 170px;
+            object-fit: cover;
+            transition: transform 0.3s ease; /* Smooth transition for the scale effect */
+        }
+
+        #about .about-image:hover {
+            transform: scale(1.2); /* Scales the image on hover */
+        }
+
+        #about .about-content {
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        #about .tile-carousel {
+            display: flex;
+            justify-content: flex-start;
+            height: 550px; /* Set a height for the vertical scroll */
+            margin-right: 20px;
+            padding-bottom: 50px;
+        }
+
+        #about .tiles-wrapper {
+            display: flex;
+            flex-direction: column; /* Stack tiles vertically */
+            transition: transform 0.5s ease-in-out; /* Smooth sliding transition */
+            height: 100%;
+            overflow-y: scroll; /* Enable vertical scroll */
+            width: 320px; /* Set a width for the scroll container */
+            margin-right: 20px;
+            direction: rtl; /* Reverse direction to place the scrollbar on the left */
+        }
+
+        #about .tiles {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-left: auto; /* Align tiles correctly to the right */
+        }
+        #about .tile {
+            background-color: #444;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 250px;
+            margin: 10px 0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        #about .tile img {
+            width: 90%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+
+        #about .tile:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #about .tile-info {
+            flex-grow: 1;
+            background-color: #444;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            display: block; /* Keep info box visible by default */
+        }
+
+        #about .tile-info h3 {
+            color: #ffeb92;
+        }
+
+        /* Scrollbar */
+        #about .tiles-wrapper::-webkit-scrollbar {
+            width: 12px; /* Width of the scrollbar */
+        }
+
+        #about .tiles-wrapper::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+
+        #about .tiles-wrapper::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Highlight selected tile and image */
+        #about .tile.selected {
+            background-color: #ffeb92; /* Highlight color */
+            color: #111;
+            box-shadow: 0 8px 12px rgba(255, 255, 0, 0.5);
+        }
+
+        #about .tile.selected img {
+            transform: scale(1.05);
+            border: 2px solid #f2d85a;
+        }
+
+        
+        #about .info-button {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #ffeb92;
+            color: #111;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #about .info-button:hover {
+            background-color: #f2d85a;
+        }
+
+        #contact .contact-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 450px;
+            height: 170px;
+            object-fit: cover;
+            transition: transform 0.3s ease; /* Smooth transition for the scale effect */
+        }
+
+        #contact .contact-image:hover {
+            transform: scale(1.2); /* Scales the image on hover */
+        }
+
+
+        .conveyor-belt-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .conveyor-belt {
+            display: flex;
+            animation: moveBelt 10s linear infinite;
+        }
+
+        .conveyor-belt img {
+            width: 200px; /* Adjust the image size */
+        }
+
+        @keyframes moveBelt {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Duplicate the images inside the belt to ensure continuous looping */
+        .conveyor-belt::after {
+            content: "";
+            display: flex;
+            width: 100%;
+        }
+
+
+        .circle {
+            position: fixed; /* Sticks to the viewport */
+            border-radius: 50%;
+            border: 3px solid;
+            border-color: rgba(255, 255, 255, 0.4);
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+
+        /* Circle 1 - Small, Fast, Red */
+        .circle:nth-child(1) {
+            width: 40px;
+            height: 40px;
+            top: 10%;
+            left: 5%;
+            animation: bounce1 9s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce1 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(50vh) translateX(40vw) scale(1.2); }
+            100% { transform: translateY(0) translateX(80vw); }
+        }
+
+        /* Circle 2 - Medium, Slow, Blue */
+        .circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 10%;
+            animation: bounce2 11s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce2 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(60vh) translateX(50vw) scale(1.1); }
+            100% { transform: translateY(0) translateX(70vw); }
+        }
+
+        /* Circle 3 - Large, Medium Speed, Green */
+        .circle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 30%;
+            left: 15%;
+            animation: bounce3 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce3 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(70vh) translateX(60vw) scale(1.3); }
+            100% { transform: translateY(0) translateX(90vw); }
+        }
+
+        /* Circle 4 - Extra Large, Very Slow, Yellow */
+        .circle:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 40%;
+            left: 20%;
+            animation: bounce4 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce4 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(80vh) translateX(50vw) scale(1.5); }
+            100% { transform: translateY(0) translateX(100vw); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <div class="header-left">pentaCODE</div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#projects">Projects</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href=""></a>
+        </nav>
+    </header>
+    <div class="background">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <!-- Sections -->
+        <section id="home">
+            <img src="/static/images/Meme/Logo1.png" alt="Welcome Image">
+            <p>
+                This portfolio showcases our group's laboratory exercises for the Data Structures and Algorithms course. Here, you can explore our implementations of data structures such as Linked Lists, Stacks, and Queues. 
+                <br><br>
+                Each exercise demonstrates a specific concept:
+                <ul>
+                    <li><b>Linked List:</b> Includes operations such as adding, removing, and displaying movies in a watchlist.</li>
+                    <li><b>Stack Implementation:</b> The Shunting Yard algorithm for converting infix to postfix notation.</li>
+                    <li><b>Queue Implementation:</b> Standard Queue and De-Queue operations.</li>
+                    <li><b>Binary Tree:</b> The LRT system is visualized as a graph, with stations as nodes and railways as edges.</li>
+                    <li><b>Graph Implementation:</b> Demonstrates how algorithms organize data efficiently. </li>
+                    <li><b>Sorting Implementation:</b> Shows how hierarchical data can be stored and searched quickly using tree structures.</li>
+                </ul>
+                <br>
+            </p>
+            <p>    
+                All features are integrated with Flask web application, allowing you to interact with the data structures in real-time. 
+            </p>
+
+        </section>
+
+        <hr class="divider">
+
+        <section id="projects">
+            <img src="/static/images/Meme/Logo2.png" alt="Project Image" class="project-image">
+            <div id="projects" class="fade-slide">
+                <div class="nav-con">
+
+                    <a href="/movies" class="card">
+                        <img src="https://images.samsung.com/is/image/samsung/assets/sg/p6_gro2/p6_initial_mktpd/tvs/smart-tv/watch-movies-and-tv/smart-tv-watch-movies-and-tv-f01-pc001.jpg?$1440_N_JPG$" alt="Movie Watchlist" class="card-img">
+                        <div class="card-content">
+                            <h3>Manage Movie Watchlist (Linked List)</h3>
+                            <p>Explore, add, remove, and manage your movie list seamlessly.</p>
+                        </div>
+                    </a>
+
+                    <a href="/stack" class="card">
+                        <img src="https://ucarecdn.com/652213b7-005f-478e-bb57-abb48a10700e/" alt="Infix to Postfix" class="card-img">
+                        <div class="card-content">
+                            <h3>Shunting Yard Algorithm (Stack)</h3>
+                            <p>Convert infix expressions to postfix notation using stacks.</p>
+                        </div>
+                    </a>
+
+                    <a href="/queuedequeue" class="card">
+                        <img src="/static/images/Meme/queueimg.png" alt="Binary tree" class="card-img">
+                        <div class="card-content">
+                            <h3>Queue and Dequeue</h3>
+                            <p>Queue and Dequeue</p>
+                        </div>
+                    </a>
+
+                    <a href="/binary" class="card">
+                        <img src="/static/images/Meme/binaryimg.png" alt="Binary tree" class="card-img">
+                        <div class="card-content">
+                            <h3>Binary Tree</h3>
+                            <p>Binary Tree. Have a Tree of Binary</p>
+                        </div>
+                    </a>
+
+                    <a href="/graph" class="card">
+                        <img src="/static/images/Meme/lrtimg.jpg" alt="LRT" class="card-img">
+                        <div class="card-content">
+                            <h3>LRT Station (Graph)</h3>
+                            <p>Find the Shortest Train Route.</p>
+                        </div>
+                    </a>
+
+                    <a href="/bubble" class="card">
+                        <img src="/static/images/Meme/sortingimg.png" alt="Sortings" class="card-img">
+                        <div class="card-content">
+                            <h3>Sorting</h3>
+                            <p>Sorting... Bubble, Selection, Insertion, and Merge</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+        <section id="about">
+            <div class="conveyor-belt-container">
+                <div class="conveyor-belt">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                </div>
+            </div>
+            <!-- Add an image on top of the About Us section -->
+            <img src="/static/images/Meme/Logo3.png" alt="About Us Image" class="about-image">
+
+            
+            <h2>Meet the team</h2>
+            <div class="about-content">
+
+                
+                <!-- Tile Carousel on the Left -->
+                <div class="tile-carousel">
+                    <div class="tiles-wrapper">
+                        <div class="tiles">
+                            <div class="tile" onclick="showInfo('General Info', 'Click on a tile on the left to see more details about it.', '/about')">
+                                
+                                <h3>General Info</h3>
+                            </div>
+                            <div class="tile" onclick="showInfo('Andrei Saldivar', 
+                                'A visionary leader who combines innovative thinking and strong problem-solving skills to guide the team toward achieving its goals.', 
+                                '/about')">
+                                <img src="/static/images/Photo/Andrei.jpg" alt="Tile 1 Image">
+                                <h3>Andrei Saldivar</h3>
+                            </div>
+                            <div class="tile" onclick="showInfo('Franchesca Cervaña', 
+                                'A detail-oriented developer who excels at keeping projects well-organized and ensuring seamless execution.', 
+                                '/about')">
+                                <img src="/static/images/Photo/Franchesca.jpeg" alt="Tile 2 Image">
+                                <h3>Franchesca Cervaña</h3>
+                            </div>
+                            <div class="tile" onclick="showInfo('Kaye Malutao', 
+                                'A meticulous organizer who ensures every project detail is in place, creating a smooth workflow for the team.', 
+                                '/about')">
+                                <img src="/static/images/Photo/Kaye.jpg" alt="Tile 3 Image">
+                                <h3>Kaye Malutao</h3>
+                            </div>
+                            <div class="tile" onclick="showInfo('Kim Español', 
+                                'A creative thinker who brings fresh perspectives and fosters collaboration within the team.', 
+                                '/about')">
+                                <img src="/static/images/Photo/Kim.jpg" alt="Tile 4 Image">
+                                <h3>Kim Español</h3>
+                            </div>
+                            <div class="tile" onclick="showInfo('Lance Diongco', 
+                                'A strategic problem-solver who is passionate about breaking down complex tasks into manageable steps.', 
+                                '/about')">
+                                <img src="/static/images/Photo/Lance.jpg" alt="Tile 5 Image">
+                                <h3>Lance Diongco</h3>
+                            </div>
+                            <div class="tile" onclick="showInfo('Sophia Lim', 
+                                'A creative lead who transforms ideas into actionable projects with her exceptional design and planning skills.', 
+                                '/about')">
+                                <img src="/static/images/Photo/Sophia.jpg" alt="Tile 6 Image">
+                                <h3>Sophia Lim</h3>
+                            </div>
+                            <div class="tile" onclick="showInfo('Viency Labanda', 
+                                'An innovator who explores new possibilities and ensures concepts are user-centered and impactful.', 
+                                '/about')">
+                                <img src="/static/images/Photo/Viency.jpg" alt="Tile 7 Image">
+                                <h3>Viency Labanda</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        
+                <!-- Information Box and Text on the Right -->
+                <div class="tile-info" id="info-box">
+                    <h3 id="info-title">Select a tile to see more details</h3>
+                    <p id="info-content">Click on a tile on the left to see more details about it.</p>
+                    <button id="info-button" class="info-button" onclick="handleButtonClick()">Learn More</button>
+                </div>
+                
+            </div>
+            <div class="conveyor-belt-container">
+                <div class="conveyor-belt">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                    <img src="/static/images/Meme/filmreel0.png" alt="Film">
+                </div>
+            </div>
+        </section>
+        <hr class="divider">
+        <section id="contact">
+            <img src="/static/images/Meme/Logo4.png" alt="Contact Us Image" class="contact-image">
+            <h2>Contact Us</h2>
+            <p>This is the contact section where users can reach out to us.</p>
+        </section>
+    </div>
+
+    <script>
+        function showInfo(title, info, buttonLink = null) {
+            // Update the title and content of the info box
+            document.getElementById("info-title").innerText = title;
+            document.getElementById("info-content").innerText = info;
+    
+            // Handle button visibility and behavior
+            const button = document.getElementById("info-button");
+            if (buttonLink) {
+                button.style.display = 'inline-block'; // Show the button
+                button.onclick = () => window.location.href = buttonLink;
+            } else {
+                button.style.display = 'none'; // Hide the button for other tiles
+            }
+        }
+    
+        // Default button behavior (in case it gets triggered manually)
+        function handleButtonClick() {
+            window.location.href = '/about';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tiles = document.querySelectorAll('#about .tile');
+
+            tiles.forEach(tile => {
+                tile.addEventListener('click', () => {
+                    // Remove 'selected' class from all tiles
+                    tiles.forEach(t => t.classList.remove('selected'));
+                    
+                    // Add 'selected' class to the clicked tile
+                    tile.classList.add('selected');
+                });
+            });
+        });
+
+    </script>
+    
+    
+    
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Handjet&display=swap" rel="stylesheet">
+    <title>Binary Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: #000;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            flex-direction: row; 
+            align-items: center;
+        }
+
+
+        /* Navigation Bar */
+        header {
+            position: fixed; /* Keeps the header fixed at the top */
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Background color */
+            color: white; /* Text color */
+            padding: 20px 30px; /* Padding for the header */
+            display: flex; /* Flexbox layout */
+            justify-content: space-between; /* Space between left text and navigation */
+            align-items: center; /* Centers items vertically */
+            z-index: 1000; /* Stays above other elements */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */ 
+            border-top: 1px solid rgba(255, 255, 255, 0.5); /* Top border */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Bottom border */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-left: -20px;
+        
+        
+        }
+
+        /* Keyframes for hiding the header */
+        @keyframes hideHeader {
+            0% {
+                transform: translateY(0); /* Start at the normal position */
+            }
+            100% {
+                transform: translateY(-100%); /* Move off-screen */
+            }
+        }
+
+        /* Keyframes for showing the header */
+        @keyframes showHeader {
+            0% {
+                transform: translateY(-100%); /* Start off-screen */
+            }
+            100% {
+                transform: translateY(0); /* Move to normal position */
+            }
+        }
+
+        /* When the header should be hidden */
+        header.hidden {
+            animation: hideHeader 0.3s ease forwards; /* Apply hide animation */
+        }
+
+        /* When the header is visible */
+        header.visible {
+            animation: showHeader 0.3s ease forwards; /* Apply show animation */
+        }
+
+        .header-left {
+            font-size: 24px; /* Adjust font size for logo */
+            font-family: 'Geo', sans-serif; /* Apply the chosen font */
+            color: #ffffff; /* Keep the text color white or as per design */
+            letter-spacing: 1px; /* Optional: add spacing for style */
+            margin-left: 40px;
+        }
+        /*check nalang if may function pa toh */
+        header .logo {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 8px 20px;
+            border-radius: 5px;
+            padding-right: 30px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 219, 100, 0.596);
+            color: #000;
+            font-weight: bold;
+        }
+
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            max-width: 100%;
+        }
+        .outer-container, .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            background-color: rgba(244, 250, 255, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 20px;
+            border-width: 4px;
+            border-color: rgb(255, 255, 255);
+            overflow: auto;
+            max-height: 80vh;
+        }
+       
+        #input-container {
+            margin-bottom: 40px;
+            width: 400px;
+        }
+        #output-container {
+            margin-bottom: 40px;
+            width: 1000px;
+        }
+        #tree-container {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            overflow: auto;
+            max-height: 500px;
+
+        }
+        .node {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgb(253, 234, 122);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: black;
+            z-index: 2; /* Ensure nodes are above connectors */
+        }
+        .connector {
+            position: absolute;
+            width: 5px;
+            background-color: rgb(41, 41, 41);
+            top: 50%; /* Center the connector at the node */
+            left: 50%;
+            transform-origin: center;
+            z-index: 1; /* Ensure connectors are below nodes */
+        }
+        .left-connector {
+            transform: rotate(-45deg);
+        }
+        .right-connector {
+            transform: rotate(45deg);
+        }
+
+        button {
+            font-size: 16px;
+            cursor: pointer;
+            background-color: teal;
+            color: white;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            display: block;
+            line-height: 55px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid #FFF;
+            position: relative;
+            overflow: hidden;
+            width: 150px;
+
+        }
+
+        button:hover {
+            background-color:#e2b740;
+            color: #FFF;
+            border-color: #e2b740;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            top: 0;
+            left: -100%;
+            transform: skewX(-25deg);
+            transition: all 0.3s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        input {
+            font-size: 16px; /* Set the font size */
+            padding: 10px; /* Add padding inside the input box */
+            margin: 10px 0; /* Add margin to separate the input field from other elements */
+            width: 100%; /* Make the input field take up the full width of its container */
+            max-width: 300px; /* Limit the maximum width of the input field */
+            border: 2px solid #ccc; /* Set a border */
+            border-radius: 5px; /* Round the corners of the input field */
+            background-color: #f5f5f5; /* Light background color */
+            color: #333; /* Text color */
+            outline: none; /* Remove the default outline on focus */
+            transition: border-color 0.3s ease, background-color 0.3s ease; /* Add smooth transitions */
+        }
+
+        input:focus {
+            border-color: #4A90E2; /* Change border color on focus */
+            background-color: #e0f7fa; /* Change background color on focus */
+        }
+
+        input::placeholder {
+            color: #aaa; /* Set placeholder text color */
+            font-style: italic; /* Make the placeholder text italic */
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">pentaCODE</div>
+        <nav>
+            <div class="dropdown">
+                <a>Projects</a>
+                <div class="dropdown-content">
+                    <a href="/movies">LinkList</a>
+                    <a href="/stack">Stack</a>
+                    <a href="/queuedequeue">Queue and Dequeue</a>
+                    <a href="/binary">Binary Tree</a>
+                    <a href="/graph">Graph</a>
+                    <a href="/bubble">Sorting</a>
+    
+                </div>
+            </div>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+      </header>
+    
+    <div class="container">
+        <div class="input-container" id="input-container">
+            <h1>Binary Tree Visualization</h1>
+            <h2>Insert Nodes</h2>
+            <input type="text" id="node_values" placeholder="Enter space-separated values (e.g., 1 2 3)">
+            <button onclick="insertNodes()">Insert Nodes</button>
+        </div>
+
+        <div class="outer-container" id="output-container">
+            <h2>Binary Tree Output</h2>
+            <div id="tree-container"></div>
+        </div>
+    </div>
+
+        <script>
+        let tree = null; // To store the root of the tree
+
+        class Node {
+            constructor(value) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+                this.x = 0;
+                this.y = 0;
+            }
+        }
+
+        // Function to insert nodes based on space-separated input
+        // Function to insert nodes based on space-separated input
+        function insertNodes() {
+            const inputField = document.getElementById('node_values');
+            const input = inputField.value.trim();
+            const values = input.split(' ').map(Number); // Convert input to an array of numbers
+
+            if (values.length === 0) {
+                alert("Please enter values separated by space.");
+                return;
+            }
+
+            // Build the tree from input values
+            tree = buildTree(values);
+
+            // Display the tree
+            displayTree();
+
+            // Clear the input field
+            inputField.value = "";
+        }
+
+
+        // Helper function to build the tree recursively
+        function buildTree(values) {
+            if (values.length === 0) return null;
+
+            const root = new Node(values[0]); // The first value becomes the root
+            const queue = [root];
+            let index = 1;
+
+            while (index < values.length) {
+                const node = queue.shift();
+
+                if (values[index] !== null) {
+                    node.left = new Node(values[index]);
+                    queue.push(node.left);
+                }
+                index++;
+
+                if (index < values.length && values[index] !== null) {
+                    node.right = new Node(values[index]);
+                    queue.push(node.right);
+                }
+                index++;
+            }
+
+            return root;
+        }
+        
+        // Function to display the tree structure with circles and connectors
+        // Function to display the tree structure with circles and connectors
+        function displayTree() {
+            const container = document.getElementById('tree-container');
+            container.innerHTML = ""; // Clear previous tree
+
+            // Calculate the positions of each node
+            positionNodes(tree, 0, 0, container.offsetWidth / 2, 100);
+
+            // Create HTML elements for each node and place them in the container
+            createNodeElements(tree, container);
+
+        }
+
+
+        // Helper function to position nodes in the container
+        function positionNodes(node, level, index, offsetX, offsetY) {
+            if (!node) return;
+
+            node.x = offsetX;
+            node.y = offsetY;
+
+            const widthBetweenNodes = 100; // Space between sibling nodes
+
+            // Position left child
+            positionNodes(node.left, level + 1, 2 * index - 1, offsetX - widthBetweenNodes / 2, offsetY + 80);
+            // Position right child
+            positionNodes(node.right, level + 1, 2 * index, offsetX + widthBetweenNodes / 2, offsetY + 80);
+        }
+
+        // Helper function to create and display node elements
+        function createNodeElements(node, container) {
+            if (!node) return;
+
+            // Create node element
+            const nodeElement = document.createElement('div');
+            nodeElement.classList.add('node');
+            nodeElement.style.left = `${node.x - 20}px`; // Adjust for centering
+            nodeElement.style.top = `${node.y - 20}px`; // Adjust for centering
+            nodeElement.textContent = node.value;
+
+            // Append node to container
+            container.appendChild(nodeElement);
+
+            // Create and append connectors
+            if (node.left) {
+                createConnector(node, node.left, container, "left");
+            }
+            if (node.right) {
+                createConnector(node, node.right, container, "right");
+            }
+
+            // Recursively create child nodes
+            createNodeElements(node.left, container);
+            createNodeElements(node.right, container);
+        }
+
+        // Helper function to create connectors
+        // Helper function to create connectors
+        function createConnector(parent, child, container, direction) {
+            const connector = document.createElement('div');
+            connector.classList.add('connector', `${direction}-connector`);
+
+            const offsetX = child.x - parent.x;
+            const offsetY = child.y - parent.y;
+            const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
+
+            connector.style.height = `${distance}px`; // Set connector height based on distance between nodes
+            connector.style.left = `${parent.x}px`;  // Start at the center of the parent node
+            connector.style.top = `${parent.y + 10}px`;  // Adjust top to be at the center of the parent node
+
+            // Add a small horizontal offset to shift the lines
+            const offsetAdjustment = -35; // Adjust this value to move the lines more or less
+
+            if (direction === "left") {
+                connector.style.left = `${parent.x - offsetAdjustment}px`; // Shift left connector slightly
+            } else if (direction === "right") {
+                connector.style.left = `${parent.x + offsetAdjustment}px`; // Shift right connector slightly
+            }
+
+            // Apply rotation to the connector
+            connector.style.transform = `rotate(${direction === "left" ? -35 : 35}deg)`;
+
+            container.appendChild(connector);
+        }
+
+    </script>
+</body>
+</html>

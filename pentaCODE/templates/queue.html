@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Handjet&display=swap" rel="stylesheet">
+    <title>Queue & Deque</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding: 80px 20px 20px;
+            color: white;
+            background-color: #000;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            overflow-x: show;
+        }
+
+
+        /* Navigation Bar */
+        header {
+            position: fixed; /* Keeps the header fixed at the top */
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Background color */
+            color: white; /* Text color */
+            padding: 20px 30px; /* Padding for the header */
+            display: flex; /* Flexbox layout */
+            justify-content: space-between; /* Space between left text and navigation */
+            align-items: center; /* Centers items vertically */
+            z-index: 1000; /* Stays above other elements */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */ 
+            border-top: 1px solid rgba(255, 255, 255, 0.5); /* Top border */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Bottom border */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-left: -20px;
+        
+        
+        }
+
+        /* Keyframes for hiding the header */
+        @keyframes hideHeader {
+            0% {
+                transform: translateY(0); /* Start at the normal position */
+            }
+            100% {
+                transform: translateY(-100%); /* Move off-screen */
+            }
+        }
+
+        /* Keyframes for showing the header */
+        @keyframes showHeader {
+            0% {
+                transform: translateY(-100%); /* Start off-screen */
+            }
+            100% {
+                transform: translateY(0); /* Move to normal position */
+            }
+        }
+
+        /* When the header should be hidden */
+        header.hidden {
+            animation: hideHeader 0.3s ease forwards; /* Apply hide animation */
+        }
+
+        /* When the header is visible */
+        header.visible {
+            animation: showHeader 0.3s ease forwards; /* Apply show animation */
+        }
+
+        .header-left {
+            font-size: 24px; /* Adjust font size for logo */
+            font-family: 'Geo', sans-serif; /* Apply the chosen font */
+            color: #ffffff; /* Keep the text color white or as per design */
+            letter-spacing: 1px; /* Optional: add spacing for style */
+            margin-left: 40px;
+        }
+        /*check nalang if may function pa toh */
+        header .logo {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 8px 20px;
+            border-radius: 5px;
+            padding-right: 30px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 219, 100, 0.596);
+            color: #000;
+            font-weight: bold;
+        }
+
+
+
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: 200px;
+        }
+
+        .left-container,
+        .right-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .left-container .topleft-container,
+        .left-container .bottomleft-container,
+        .right-container .topright-container,
+        .right-container .bottomright-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .container h2, .container h3 {
+            color: #FFF;
+        }
+
+        .container input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .container button {
+            font-size: 14px;
+            cursor: pointer;
+            color: white;
+            margin-bottom: 10px;
+            display: block;
+            line-height: 45px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid #FFF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container button:hover {
+            background-color:#e2b740;
+            color: #FFF;
+            border-color: #e2b740;
+        }
+
+        .container button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            top: 0;
+            left: -100%;
+            transform: skewX(-25deg);
+            transition: all 0.3s;
+        }
+
+        .container button:hover::before {
+            left: 100%;
+        }
+
+        .left-list, .deque-list {
+            white-space: pre-wrap; /* Ensures the list items are displayed in a readable format */
+            word-wrap: break-word;
+        }
+
+        .queue-list, .deque-list {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFF;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px; /* Adding space between the lists */
+            white-space: nowrap; /* Prevent wrapping of items */
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            display: flex; /* Makes it a flex container */
+            flex-direction: row; /* Aligns items in a horizontal row */
+            flex-wrap: wrap;
+            gap: 10px; /* Adds spacing between the boxes */
+            max-height: 250px; /* Set a max height for the container */
+            overflow-y: auto; /* Enable vertical scrolling when content exceeds max-height */
+
+
+        }
+
+
+        /* Styling for the left container */
+        .left-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 300px;
+            background-color: rgba(244, 250, 255, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            border-width: 4px;
+            border-color: rgb(255, 255, 255);
+            max-width: 370px;
+        }
+
+        /* Styling for the right container */
+        .right-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 300px;
+            background-color: rgba(244, 250, 255, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            border-width: 4px;
+            border-color: rgb(255, 255, 255);
+            max-width: 800px;
+        }
+
+        /* Make sure both containers align properly */
+        .left-container .topleft-container,
+        .left-container .bottomleft-container {
+            flex: 1;
+        }
+
+        .right-container .topright-container,
+        .right-container .bottomright-container {
+            flex: 1;
+        }
+        .queue-box {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            word-wrap: break-word;
+            font-size: 16px;
+            color: #FFF;
+            white-space: pre-wrap;
+        }
+
+        /* Styling for each item box */
+        /* Styling for each item box */
+        .item-box {
+            background-color: rgba(255, 255, 255, 0.3); /* Light background with opacity */
+            border: 2px solid #ccc; /* Border around the box */
+            border-radius: 10px; /* Rounded corners */
+            padding: 10px; /* Padding inside the box */
+            font-size: 16px; /* Font size */
+            text-align: center; /* Centered text */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Light shadow around the box */
+            width: fit-content;
+            margin-right: 10px; /* Adds spacing between the boxes */
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">pentaCODE</div>
+        <nav>
+            <div class="dropdown">
+                <a>Projects</a>
+                <div class="dropdown-content">
+                    <a href="/movies">LinkList</a>
+                    <a href="/stack">Stack</a>
+                    <a href="/queuedequeue">Queue and Dequeue</a>
+                    <a href="/binary">Binary Tree</a>
+                    <a href="/graph">Graph</a>
+                    <a href="/bubble">Sorting</a>
+    
+                </div>
+            </div>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+      </header>
+    
+    <div class="container">
+        <div class="left-container">
+            <div class="topleft-container">
+                <h2>Queue Operations</h2>
+                <input type="text" id="queueInput" placeholder="Enter item">
+                <button onclick="enqueue()">Enqueue</button>
+                <button onclick="dequeue()">Dequeue</button>
+
+            </div>
+            <div class="bottomleft-container">
+                <h2>Deque Operations</h2>
+                <input type="text" id="dequeInput" placeholder="Enter item">
+                <button onclick="addLeft()">Add Left</button>
+                <button onclick="addRight()">Add Right</button>
+                <button onclick="removeLeft()">Remove Left</button>
+                <button onclick="removeRight()">Remove Right</button>
+
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="topright-container">
+                <h3>Queue List</h3>
+                <div id="queueList" class="queue-list queue-box">Queue: </div>
+            </div>
+            
+            <div class="bottomright-container">
+                <h3>Deque List</h3>
+                <div id="dequeList" class="deque-list queue-box">Deque: </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function sendRequest(endpoint, method = "GET", body = null) {
+            const options = { method };
+            if (body) {
+                options.headers = { "Content-Type": "application/json" };
+                options.body = JSON.stringify(body);
+            }
+            const response = await fetch(endpoint, options);
+            return response.json();
+        }
+
+        async function enqueue() {
+            const item = document.getElementById("queueInput").value;
+            await sendRequest("/queue/enqueue", "POST", { item });
+            document.getElementById("queueInput").value = '';  // Clear the input field
+            refreshLists();
+        }
+
+        async function dequeue() {
+            await sendRequest("/queue/dequeue", "POST");
+            refreshLists();
+        }
+
+        async function addLeft() {
+            const item = document.getElementById("dequeInput").value;
+            await sendRequest("/deque/add_left", "POST", { item });
+            document.getElementById("dequeInput").value = '';  // Clear the input field
+            refreshLists();
+        }
+
+        async function addRight() {
+            const item = document.getElementById("dequeInput").value;
+            await sendRequest("/deque/add_right", "POST", { item });
+            document.getElementById("dequeInput").value = '';  // Clear the input field
+            refreshLists();
+        }
+
+        async function removeLeft() {
+            await sendRequest("/deque/remove_left", "POST");
+            refreshLists();
+        }
+
+        async function removeRight() {
+            await sendRequest("/deque/remove_right", "POST");
+            refreshLists();
+        }
+        async function refreshLists() {
+            // Get both queue and deque data
+            const queueData = await sendRequest("/queue/size", "GET");
+            const dequeData = await sendRequest("/deque/size", "GET");
+
+            // Clear existing lists before updating
+            document.getElementById("queueList").innerHTML = '';
+            document.getElementById("dequeList").innerHTML = '';
+
+            // Add each item as a box in a horizontal layout (row)
+            queueData.queue.forEach(item => {
+                const itemBox = document.createElement("div"); // Create a new div for each item
+                itemBox.classList.add("item-box"); // Add the item-box class to the div
+                itemBox.textContent = item; // Set the item text
+                document.getElementById("queueList").appendChild(itemBox); // Append it to the queue list
+            });
+
+            dequeData.deque.forEach(item => {
+                const itemBox = document.createElement("div"); // Create a new div for each item
+                itemBox.classList.add("item-box"); // Add the item-box class to the div
+                itemBox.textContent = item; // Set the item text
+                document.getElementById("dequeList").appendChild(itemBox); // Append it to the deque list
+            });
+        }
+        let lastScrollTop = 0; // To keep track of the last scroll position
+        let isHeaderHidden = false; // Flag to track if the header is hidden
+
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop && currentScroll > 80) {
+            // If scrolling down and the scroll position is greater than 100px, hide the header
+            if (!isHeaderHidden) {
+                header.classList.add('hidden');
+                header.classList.remove('visible');
+                isHeaderHidden = true; // Mark header as hidden
+            }
+            } else if (currentScroll < lastScrollTop && isHeaderHidden) {
+            // If scrolling up and header is hidden, show the header
+            header.classList.add('visible');
+            header.classList.remove('hidden');
+            isHeaderHidden = false; // Mark header as visible
+            }
+
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Prevent negative scroll values
+        });
+
+    </script>
+
+</body>
+</html>

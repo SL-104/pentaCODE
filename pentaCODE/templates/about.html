@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Handjet&display=swap" rel="stylesheet">
+    <title>About-Us</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000;
+            color: #E6E6E6;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+
+
+        /* Navigation Bar */
+        header {
+            position: fixed; /* Keeps the header fixed at the top */
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Background color */
+            color: white; /* Text color */
+            padding: 20px 30px; /* Padding for the header */
+            display: flex; /* Flexbox layout */
+            justify-content: space-between; /* Space between left text and navigation */
+            align-items: center; /* Centers items vertically */
+            z-index: 1000; /* Stays above other elements */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */ 
+            border-top: 1px solid rgba(255, 255, 255, 0.5); /* Top border */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Bottom border */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-left: -20px;
+        
+        
+        }
+
+        /* Keyframes for hiding the header */
+        @keyframes hideHeader {
+            0% {
+                transform: translateY(0); /* Start at the normal position */
+            }
+            100% {
+                transform: translateY(-100%); /* Move off-screen */
+            }
+        }
+
+        /* Keyframes for showing the header */
+        @keyframes showHeader {
+            0% {
+                transform: translateY(-100%); /* Start off-screen */
+            }
+            100% {
+                transform: translateY(0); /* Move to normal position */
+            }
+        }
+
+        /* When the header should be hidden */
+        header.hidden {
+            animation: hideHeader 0.3s ease forwards; /* Apply hide animation */
+        }
+
+        /* When the header is visible */
+        header.visible {
+            animation: showHeader 0.3s ease forwards; /* Apply show animation */
+        }
+
+        .header-left {
+            font-size: 24px; /* Adjust font size for logo */
+            font-family: 'Geo', sans-serif; /* Apply the chosen font */
+            color: #ffffff; /* Keep the text color white or as per design */
+            letter-spacing: 1px; /* Optional: add spacing for style */
+            margin-left: 40px;
+        }
+        /*check nalang if may function pa toh */
+        header .logo {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 8px 20px;
+            border-radius: 5px;
+            padding-right: 30px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 219, 100, 0.596);
+            color: #000;
+            font-weight: bold;
+        }
+
+
+        /* Background Stars */
+        .background {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #000;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .box {
+            width: 90%;
+            max-width: 1200px;
+            height: 400px;
+            border: 2px solid #ffdf5d;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin: 20px;
+            background-color: rgba(0, 0, 0, 0.7); /* Slight background for content */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            height: 100%;
+        }
+
+        .character {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            transition: opacity 0.3s ease;
+        }
+
+        .character img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .character h3 {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .character.dimmed {
+            opacity: 0.7;
+        }
+
+        #description-container {
+            position: center;
+            bottom: 20px;
+            left: 50%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #E6E6E6;
+            padding: 20px;
+            border: 2px solid #ffdf5d;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            margin-top: 20px;  /* Add margin to push it down */
+            display: none;
+        }
+
+        .description-box h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #ffdf5d;
+        }
+
+        .description-box p {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        /* New CSS for image-text-wrapper */
+        .image-text-wrapper {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: flex-start; /* Align items to the right */
+            margin-top: 20px;
+            padding-right: 20px;
+            margin-right: 10px;
+        }
+
+        .image-text-wrapper img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-bottom: 10px; /* Adds space between the image and the text */
+            cursor: pointer;
+            padding-right: 10px;
+        }
+
+
+        .description {
+            color: #E6E6E6;
+        }
+
+
+        
+        #about .about-image {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 400px;
+            height: 170px;
+            object-fit: cover;
+            transition: transform 0.3s ease; /* Smooth transition for the scale effect */
+        }
+
+        #about .about-image:hover {
+            transform: scale(1.2); /* Scales the image on hover */
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">pentaCODE</div>
+        <nav>
+            <div class="dropdown">
+                <a>Projects</a>
+                <div class="dropdown-content">
+                    <a href="/movies">LinkList</a>
+                    <a href="/stack">Stack</a>
+                    <a href="/queuedequeue">Queue and Dequeue</a>
+                    <a href="/binary">Binary Tree</a>
+                    <a href="/graph">Graph</a>
+                    <a href="/bubble">Sorting</a>
+    
+                </div>
+            </div>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+      </header>
+    
+    <div class="background">
+        
+        <section id="about">
+        <img src="/static/images/Meme/Logo3.png" alt="About Us Image" class="about-image">
+
+        <div class="box">
+
+            <div class="container">
+                <div class="character" 
+                    data-text="A visionary leader who combines innovative thinking and strong problem-solving skills to guide the team toward achieving its goals.
+                    Technical Skills : Python, HTML, Javascript, CSS, SQL
+                    Soft Skills: Problem-Solving, Communication, Time Management, Adaptability
+                    Motto: 'Lead with purpose, adapt with resilience, and achieve with determination.'
+                    Interest: Enjoys playing sports such as badminton, basketball, or swimming.
+                    Future Goals: Strive to master cloud computing and deploy scalable applications that run efficiently on cloud platforms like AWS or Azure." 
+                    data-alt-src="/static/images/P_Ab/P1_G.png" >
+                    <img src="/static/images/P_Ab/P1.png" alt="Character 1">
+                    <h3>Saldivar, Andrei </h3>
+                </div>
+                <div class="character" 
+                    data-text="A strategic problem-solver who is passionate about breaking down complex tasks into manageable steps.                    
+                    Technical Skills : Python, HTML, Javascript, CSS, SQL
+                    Soft Skills: Analytical Thinking, Collaboration, Resilience, Problem-Solving
+                    Motto: 'Evolve, adapt, thrive'
+                    Interest: Loves to play games like solving puzzles, strategy games, or escape rooms.
+                    Future Goals: Strive to build a portfolio of diverse, interactive websites that integrate cutting-edge technologies like React, Node.js, and APIs." 
+                    data-alt-src="/static/images/P_Ab/P2_G.png">                    
+                    <img src="/static/images/P_Ab/P2.png" alt="Character 2">
+                    <h3>Diongco, Lance</h3>
+                </div>
+                <div class="character"
+                    data-text="A strategic problem-solver who is passionate about breaking down complex tasks into manageable steps.                    
+                    Technical Skills : Python, HTML, Javascript, CSS, SQL
+                    Soft Skills: Creativity, Collaboration, Problem-Solving, Attention to Detail
+                    Motto: 'Live everyday like it's your last day'
+                    Interest: Loves drawing, animating, and playing badminton.
+                    Future Goals: Aim to refine skills in game development, creating interactive and engaging games using popular engines like Unity or Unreal Engine." 
+                    data-alt-src="/static/images/P_Ab/P3_G.png" >
+                    <img src="/static/images/P_Ab/P3.png" alt="Character 3">
+                    <h3>Lim, Sophia</h3>
+                </div>
+                <div class="character" 
+                    data-text="A strategic problem-solver who is passionate about breaking down complex tasks into manageable steps.                    
+                    Technical Skills : Python, HTML, Javascript, CSS, SQL
+                    Soft Skills: Consistency, Dependability, Problem-Solving, Adaptability
+                    Motto: 'Be better than yesterday'
+                    Interest: Keen on art, whether it's drawing, painting, or digital design.
+                    Future Goals: Strive to become a skilled project manager, leading diverse teams to successfully deliver innovative products on time." 
+                    data-alt-src="/static/images/P_Ab/P4_G.png" >
+                    <img src="/static/images/P_Ab/P4.png" alt="Character 4">
+                    <h3>Malutao, Kaye</h3>
+                </div>
+                <div class="character" 
+                    data-text="A strategic problem-solver who is passionate about breaking down complex tasks into manageable steps.                    
+                    Technical Skills : Python, HTML, Javascript, CSS, SQL
+                    Soft Skills: Adaptability, Teamwork, Time Management, Organization
+                    Motto: 'Your only limit is you'
+                    Interest: Passionate about photography, capturing moments and landscapes.
+                    Future Goals: Work towards becoming an expert in AI and machine learning, developing systems that automate and enhance everyday processes." 
+                    data-alt-src="/static/images/P_Ab/P5_G.png">
+                    <img src="/static/images/P_Ab/P5.png" alt="Character 5">
+                    <h3>Labanda, Viency</h3>
+                </div>
+                <div class="character" 
+                    data-text="A strategic problem-solver who is passionate about breaking down complex tasks into manageable steps.                    
+                    Technical Skills : Python, HTML, Javascript, CSS, SQL
+                    Soft Skills: Organization, Attention to Detail, Critical Thinking, Proactiveness
+                    Motto: 'Embrace the process, celebrate the progress.'
+                    Interest: Enjoys nature activities like hiking, camping, or gardening.
+                    Future Goals: Aim to specialize in artificial intelligence and machine learning, developing algorithms that enhance automation and data analysis." 
+                    data-alt-src="/static/images/P_Ab/P6_G.png" >
+                    <img src="/static/images/P_Ab/P6.png" alt="Character 6">
+                    <h3>Cervaña, Franchesca</h3>
+                </div>
+                <div class="character" 
+                    data-text="A strategic problem-solver who is passionate about breaking down complex tasks into manageable steps.                    
+                    Technical Skills : Python, HTML, Javascript, CSS, SQL
+                    Soft Skills: Creativity, Adaptability, Teamwork, Open-Mindedness
+                    Motto: 'Be the best version of yourself.'
+                    Interest: Passionate about dancing and expressing creativity through movement.
+                    Future Goals: Aspire to learn advanced security protocols to build robust and secure software applications that protect user data." 
+                    data-alt-src="/static/images/P_Ab/P7_G.png">
+                    <img src="/static/images/P_Ab/P7.png" alt="Character 7">
+                    <h3>Español, Kim</h3>
+                </div>
+            </div>
+        </div>
+
+        <div id="description-container">
+            <div class="description-box">
+                <h2 id="description-title"></h2>
+                <p id="description-text"></p>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const characters = document.querySelectorAll('.character');
+        const descriptionContainer = document.getElementById('description-container');
+        const descriptionTitle = document.getElementById('description-title');
+        const descriptionText = document.getElementById('description-text');
+        const characterLink = document.getElementById('character-link');
+        const characterImage = document.getElementById('character-image');
+        const secondImageContainer = document.getElementById('second-image-container');
+        const secondLink = document.getElementById('second-link');
+        let selectedCharacter = null;
+
+        
+        // Initially hide the description container
+        descriptionContainer.style.display = 'none';
+
+        characters.forEach(character => {
+            character.addEventListener('click', () => {
+                const img = character.querySelector('img');
+                
+                // Check if the same character is clicked again
+                if (selectedCharacter === character) {
+                    resetAllCharacters();
+                    selectedCharacter = null; // Clear the selection
+                    descriptionText.textContent = 'Click on a character to see their description here.';
+                    
+                    // Hide the description container when no character is selected
+                    descriptionContainer.style.display = 'none';
+                } else {
+                    // Set new selection
+                    selectedCharacter = character;
+                    
+                    // Update and show the description container
+                    descriptionTitle.textContent = character.querySelector('h3').textContent;
+                    descriptionText.textContent = character.getAttribute('data-text');
+                    descriptionContainer.style.display = 'block';
+
+                    // Scroll to the description container
+                    descriptionContainer.scrollIntoView({ behavior: 'smooth' });
+
+                    // Dim other characters
+                    characters.forEach(c => c.classList.toggle('dimmed', c !== character));
+
+                    // Loop through all characters
+                    characters.forEach(c => {
+                        const cImg = c.querySelector('img');
+                        if (c === character) {
+                            // Highlight selected character
+                            c.classList.remove('dimmed');
+                            cImg.src = cImg.dataset.original || cImg.src;
+                        } else {
+                            // Change non-selected characters
+                            c.classList.add('dimmed');
+                            if (!cImg.dataset.original) {
+                                cImg.dataset.original = cImg.src; // Store original src
+                            }
+                            cImg.src = c.getAttribute('data-alt-src');
+                        }
+                    });
+
+                    // Update the description text
+                    descriptionText.textContent = character.getAttribute('data-text');
+
+                    
+                    // Update the second image and link
+                    const secondImage = character.getAttribute('data-second-img');
+                    const secondLinkURL = character.getAttribute('data-second-link');
+
+                    if (secondImage && secondLinkURL) {
+                        secondImageContainer.style.display = 'flex';
+                        document.getElementById('second-image').src = secondImage;
+                        secondLink.href = secondLinkURL;
+                    } else {
+                        secondImageContainer.style.display = 'none'; // Hide if no second image or link is provided
+                    }
+                    
+                }
+            });
+        });
+
+
+        // Function to reset all characters
+        function resetAllCharacters() {
+            characters.forEach(c => {
+                const img = c.querySelector('img');
+                c.classList.remove('dimmed');
+                if (img.dataset.original) {
+                    img.src = img.dataset.original; // Restore original image
+                    delete img.dataset.original; // Remove temporary dataset
+                }
+            });
+        } 
+
+        let lastScrollTop = 0; // To keep track of the last scroll position
+        let isHeaderHidden = false; // Flag to track if the header is hidden
+
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop && currentScroll > 80) {
+            // If scrolling down and the scroll position is greater than 100px, hide the header
+            if (!isHeaderHidden) {
+                header.classList.add('hidden');
+                header.classList.remove('visible');
+                isHeaderHidden = true; // Mark header as hidden
+            }
+            } else if (currentScroll < lastScrollTop && isHeaderHidden) {
+            // If scrolling up and header is hidden, show the header
+            header.classList.add('visible');
+            header.classList.remove('hidden');
+            isHeaderHidden = false; // Mark header as visible
+            }
+
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Prevent negative scroll values
+        });
+
+    </script>
+</body>
+</html>

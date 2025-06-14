@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Handjet&display=swap" rel="stylesheet">
+    <title>Insertion Sort</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            overflow-y: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding-left: 220px;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: #000;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            margin-top: 10px;
+
+        }
+
+        /* Navigation Bar */
+        header {
+            position: fixed; /* Keeps the header fixed at the top */
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Background color */
+            color: white; /* Text color */
+            padding: 20px 30px; /* Padding for the header */
+            display: flex; /* Flexbox layout */
+            justify-content: space-between; /* Space between left text and navigation */
+            align-items: center; /* Centers items vertically */
+            z-index: 1000; /* Stays above other elements */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */ 
+            border-top: 1px solid rgba(255, 255, 255, 0.5); /* Top border */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Bottom border */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-left: -200px;
+        }
+
+        .header-left {
+            font-size: 24px; /* Adjust font size for logo */
+            font-family: 'Geo', sans-serif; /* Apply the chosen font */
+            color: #ffffff; /* Keep the text color white or as per design */
+            letter-spacing: 1px; /* Optional: add spacing for style */
+            margin-left: 40px;
+        }
+        
+        header .logo {
+            position: absolute;
+            left: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 8px 20px;
+            border-radius: 5px;
+            padding-right: 30px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 219, 100, 0.596);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .main-container {
+            display: flex;
+            width: 80%;
+            justify-content: center;
+            align-items: flex-end;
+            height: 80%;
+        }
+
+        #left-container {
+            width: 250px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px;
+            gap: 10px;
+            background-color: rgba(244, 250, 255, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-width: 4px;
+            border-color: rgb(255, 255, 255);
+        }
+
+        #visualizer-container {
+            width: 700px;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: 350px;
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px;
+            overflow: hidden;
+            gap: 10px;
+            background-color: rgba(244, 250, 255, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-width: 4px;
+            border-color: rgb(255, 255, 255);
+        }
+
+        #visualizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 100%;
+            width: auto;
+            position: relative;
+            padding: 0 10px;
+            margin-bottom: 300px;
+        }
+
+        .bar {
+            width: 20px;
+            margin: 0 2px;
+            background-color: #61a2df;
+            transition: transform 0.5s, height 0.5s;
+            position: relative;
+        }
+
+        .bar-text {
+            position: top;
+            bottom: 5px; 
+            width: 100%;
+            text-align: left;
+            color: white;
+            font-weight: bold;
+            font-size: 14px; 
+        }
+
+
+        #right-container {
+            width: 400px;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            margin-left: 20px;
+            position: fixed;
+            right: 100px;
+            border: 2px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            overflow-y: auto; /* Enables scrolling */
+            gap: 10px;
+            background-color: rgba(244, 250, 255, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-width: 4px;
+            border-color: rgb(255, 255, 255);
+        }
+
+        #steps-list {
+            width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        button {
+            font-size: 16px;
+            cursor: pointer;
+            background-color: teal;
+            color: white;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            display: block;
+            line-height: 55px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid #FFF;
+            position: relative;
+            overflow: hidden;
+            width: 150px;
+
+        }
+
+        button:hover {
+            background-color:#e2b740;
+            color: #FFF;
+            border-color: #e2b740;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            top: 0;
+            left: -100%;
+            transform: skewX(-25deg);
+            transition: all 0.3s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">pentaCODE</div>
+        <nav>
+            <div class="dropdown">
+                <a>Projects</a>
+                <div class="dropdown-content">
+                    <a href="/movies">LinkList</a>
+                    <a href="/stack">Stack</a>
+                    <a href="/queuedequeue">Queue and Dequeue</a>
+                    <a href="/binary">Binary Tree</a>
+                    <a href="/graph">Graph</a>
+                    <a href="/bubble">Sorting</a>
+    
+                </div>
+            </div>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+      </header>
+    
+    <div class="main-container">
+        <div id="left-container">
+            <p>Insertion Sort Visualizer</p>
+            <label for="num-bars">Number of Bars: </label>
+            <br>
+            <input type="number" id="num-bars" min="5" max="50" value="10">
+            <button id="update-bars">Randomize</button>
+            <button id="sort">Sort</button>
+            <br>
+            <a href="/bubble">
+                <button type="button">Bubble</button>
+            </a>
+            <a href="/selection">
+                <button type="button">Selection</button>
+            </a>
+            <a href="/insertion">
+                <button type="button">Insertion</button>
+            </a>
+            <a href="/merge">
+                <button type="button">Merge</button>
+            </a>
+        </div>
+
+        <div id="visualizer-container">
+            <div id="visualizer"></div>
+        </div>
+
+        <div id="right-container">
+            <p>Sorting Steps:</p>
+            <button id="toggle-view">Toggle View</button>
+
+            <div id="steps-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const visualizer = document.getElementById("visualizer");
+        const stepsList = document.getElementById("steps-list");
+
+        let isListView = true; 
+        let lastSteps = []; 
+        let currentList = []; 
+
+        function renderList(list) {
+            visualizer.innerHTML = "";
+            list.forEach(value => {
+                const bar = document.createElement("div");
+                bar.classList.add("bar");
+                bar.style.height = `${value * 10}px`;
+
+                const text = document.createElement("span");
+                text.textContent = value; 
+                text.classList.add("bar-text");
+
+                bar.appendChild(text); 
+                visualizer.appendChild(bar);
+            });
+        }
+
+        async function fetchList() {
+            const response = await fetch("/get_list");
+            const list = await response.json();
+            currentList = list;
+            renderList(list);
+        }
+
+        document.getElementById("update-bars").addEventListener("click", async () => {
+            const numBars = document.getElementById("num-bars").value;
+            const response = await fetch("/randomize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ num_rectangles: parseInt(numBars), min_value: 1, max_value: 20 })
+            });
+            const newList = await response.json();
+            currentList = newList;
+            renderList(newList);
+            stepsList.innerHTML = ""; 
+            lastSteps = []; 
+        });
+
+        async function insertionSortAnimation() {
+            stepsList.innerHTML = ""; 
+            lastSteps = []; 
+            const bars = Array.from(document.querySelectorAll(".bar"));
+
+            for (let i = 1; i < currentList.length; i++) {
+                let key = currentList[i];
+                let j = i - 1;
+
+                bars[i].style.backgroundColor = "#f39c12"; // Highlight current bar
+
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                while (j >= 0 && currentList[j] > key) {
+                    currentList[j + 1] = currentList[j];
+                    bars[j].style.transform = "translateY(150px)"; // Move the bars down
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    bars[j].style.transform = "translateY(0)"; // Restore position
+                    bars[j].style.backgroundColor = "#4CAF50"; // Restore color
+
+                    j--;
+                }
+                currentList[j + 1] = key;
+                renderList(currentList); // Update visualization
+
+                logStep(`Inserted ${key} at position ${j + 1}`);
+                bars[i].style.backgroundColor = "#4CAF50"; // Reset the current bar
+
+                if (isListView) {
+                    updateDisplayedSteps(); 
+                }
+            }
+
+            logStep("Sorting complete!");
+        }
+
+        function logStep(step) {
+            lastSteps.push({ listState: [...currentList], action: step }); 
+            updateDisplayedSteps();
+        }
+
+        function updateDisplayedSteps() {
+            stepsList.innerHTML = ""; 
+            if (isListView) {
+                lastSteps.forEach(stepObj => {
+                    const listItem = document.createElement("p");
+                    listItem.textContent = `[${stepObj.listState.join(", ")}]`; 
+                    stepsList.appendChild(listItem);
+                });
+            } else {
+                lastSteps.forEach(stepObj => {
+                    const stepItem = document.createElement("p");
+                    stepItem.textContent = stepObj.action; 
+                    stepsList.appendChild(stepItem);
+                });
+            }
+            stepsList.scrollTop = stepsList.scrollHeight; 
+        }
+
+        document.getElementById("sort").addEventListener("click", insertionSortAnimation);
+
+        const toggleButton = document.getElementById("toggle-view");
+
+        toggleButton.addEventListener("click", () => {
+            isListView = !isListView;
+            updateDisplayedSteps(); 
+        });
+
+        fetchList(); 
+    </script>
+</body>
+</html>

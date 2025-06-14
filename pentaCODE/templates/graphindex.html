@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph (LRT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Handjet&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      padding: 80px 20px 20px;
+      color: white;
+      background-color: #000;
+      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+
+    /* Navigation Bar */
+    header {
+      position: fixed; /* Keeps the header fixed at the top */
+      top: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Background color */
+      color: white; /* Text color */
+      padding: 20px 30px; /* Padding for the header */
+      display: flex; /* Flexbox layout */
+      justify-content: space-between; /* Space between left text and navigation */
+      align-items: center; /* Centers items vertically */
+      z-index: 1000; /* Stays above other elements */
+      transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */ 
+      border-top: 1px solid rgba(255, 255, 255, 0.5); /* Top border */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Bottom border */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      margin-left: -20px;
+      
+      
+    }
+
+    /* Keyframes for hiding the header */
+    @keyframes hideHeader {
+      0% {
+        transform: translateY(0); /* Start at the normal position */
+      }
+      100% {
+        transform: translateY(-100%); /* Move off-screen */
+      }
+    }
+
+    /* Keyframes for showing the header */
+    @keyframes showHeader {
+      0% {
+        transform: translateY(-100%); /* Start off-screen */
+      }
+      100% {
+        transform: translateY(0); /* Move to normal position */
+      }
+    }
+
+    /* When the header should be hidden */
+    header.hidden {
+      animation: hideHeader 0.3s ease forwards; /* Apply hide animation */
+    }
+
+    /* When the header is visible */
+    header.visible {
+      animation: showHeader 0.3s ease forwards; /* Apply show animation */
+    }
+
+    .header-left {
+        font-size: 24px; /* Adjust font size for logo */
+        font-family: 'Geo', sans-serif; /* Apply the chosen font */
+        color: #ffffff; /* Keep the text color white or as per design */
+        letter-spacing: 1px; /* Optional: add spacing for style */
+        margin-left: 40px;
+    }
+    /*check nalang if may function pa toh */
+    header .logo {
+        position: absolute;
+        left: 30px;
+        font-size: 2em;
+        font-weight: bold;
+    }
+
+    header nav {
+        display: flex;
+        gap: 25px;
+    }
+
+    header nav a {
+        color: white;
+        text-decoration: none;
+        font-size: 1em;
+        padding: 8px 20px;
+        border-radius: 5px;
+        padding-right: 30px;
+        font-weight: bold;
+    }
+
+    header nav a:hover {
+        text-decoration: underline;
+        background-color: rgba(255, 219, 100, 0.596);
+        color: #000;
+        font-weight: bold;
+    }
+
+
+    .description {
+        width: 40%;
+        font-size: 16px;
+        color: #555;
+        text-align: justify;
+        margin-left: -40px;
+        margin-right: 40px;
+    }
+
+    /* Flex container to align button and main container */
+    .container {
+      display: flex;
+      align-items: flex-start;
+      padding: 20px;
+      gap: 20px;
+      margin-left: 230px;
+    }
+
+    /* Button container styling */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 300px;
+      height: 600px;
+      background-color: rgba(244, 250, 255, 0.3);
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-width: 4px;
+      border-color: rgb(255, 255, 255);
+    }
+
+    .button-container button {
+        font-size: 16px;
+        cursor: pointer;
+        background-color: teal;
+        color: white;
+        transition: background-color 0.3s;
+        margin-bottom: 10px; /* Add space between buttons */
+        display: block;
+        line-height: 60px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 1em;
+        font-weight: bold;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        border: 2px solid #FFF;
+        position: relative;
+        overflow: hidden;
+
+    }
+
+    .button-container button:hover {
+      background-color:#e2b740;
+      color: #FFF;
+      border-color: #e2b740;
+    }
+
+    .button-container button::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      top: 0;
+      left: -100%;
+      transform: skewX(-25deg);
+      transition: all 0.3s;
+    }
+
+    .button-container button:hover::before {
+      left: 100%;
+    }
+
+    .button-container input {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .button-container select {
+      padding: 10px;
+      font-size: 14px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 15px; /* Add space between dropdowns */
+    }
+    .button-container label {
+      display: block;
+      margin-right: 10px; /* Adds space between label and dropdown */
+      margin-bottom: 15px;
+    }
+
+    .button-container h1 {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    select {
+      background-color:  rgba(255, 255, 255, 0.87); /* Transparent background */
+      color: #333; /* Text color */
+      border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+    }
+
+    .result {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e9ecef;
+        border-radius: 5px;
+    }
+    .error {
+        color: red;
+    }
+    /* Main content container styling */
+    .main-container {
+      position: relative;
+      width: 700px;
+      height: 600px;
+      background-color: rgba(244, 250, 255, 0.3);
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-width: 4px;
+      border-color: rgb(255, 255, 255);
+    }
+
+    .category {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+
+    .category h2 {
+      margin: 10px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .circle-container {
+      position: relative;
+      display: inline-block;
+      margin: 0 20px;
+    }
+
+    .circle {
+      --circle-size: 10px;
+      position: absolute;
+      width: var(--circle-size);
+      height: var(--circle-size);
+      border-radius: 50%;
+      transition: transform 0.3s ease-in-out;
+      z-index: 5;
+      
+    }
+
+    .category-1 .circle {
+      background-color: #FF5733;
+      border-width: 3px;
+      border-color: #5c1938;
+      border-style: solid; 
+    }
+
+    .category-2 .circle {
+      background-color: #3357FF;
+      border-width: 3px;
+      border-color: #20195c;
+      border-style: solid; 
+    }
+
+    .category-3 .circle {
+      background-color: #33FF57;
+      border-width: 3px;
+      border-color: #19495c;
+      border-style: solid; 
+    }
+
+    .circle-container:hover .circle {
+      transform: scale(1.2);
+    }
+
+    .circle-text {
+      position: absolute;
+      font-size: 11px;
+      font-weight: bold;
+      color: #ffffffe2;
+      text-shadow: 
+        -1px -1px 0 black,      /* Top-left shadow */
+         1px -1px 0 black,      /* Top-right shadow */
+        -1px  1px 0 black,      /* Bottom-left shadow */
+         1px  1px 0 black;      /* Bottom-right shadow */
+      white-space: nowrap;
+      z-index: 0;
+      display: block;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .circle-container:hover .circle-text {
+      transform: scale(1.2);
+    }
+
+    .circle-text {
+      top: var(--top, auto);
+      left: var(--left, auto);
+      bottom: var(--bottom, auto);
+      right: var(--right, auto);
+      transform: translateX(var(--translate-x, 0)) translateY(var(--translate-y, 0));
+    }
+
+
+    .circle-container .circle.zoomed {
+        transform: scale(1.2);  /* Zoom effect */
+    }
+
+    .circle-container.faded .circle {
+        opacity: 0.3;  /* Transparency for non-highlighted stations */
+        transition: opacity 0.7s ease;
+    }
+
+    /* Optional: Add a smooth transition for zoomed in stations */
+    .circle-container .circle {
+        transition: transform 0.7s ease, opacity 0.7s ease;
+    }
+
+    /* Gold circle class */
+    .circle.golden {
+        background-color: gold ;
+        border-color: #d4af37;
+    }
+
+    /* When station is part of the route, apply golden and zoom */
+    .circle-container .circle.golden {
+        background-color: gold;
+        transition: transform 0.7s ease;
+    }
+
+    /* Green Circle for Initial Destination */
+    .circle.initial-destination {
+        background-color: #33FF57!important; /* Green color */
+        border-color: #19495c!important;
+    }
+
+    /* Red Circle for Final Destination */
+    .circle.final-destination {
+        background-color: #FF5733!important; /* Red color */
+        border-color: #d32f2f!important;
+    }
+
+
+    /* You can also add more styles for smoother transitions */
+    .line {
+        position: absolute;
+        background-color: #000;
+        height: 1.3px; 
+        width: 100%;
+        z-index: 0;
+        transition: stroke 0.3s ease-in-out;
+    }
+
+    .line-text {
+      position: absolute;
+      font-size: 11px;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0);
+      white-space: nowrap;
+      z-index: 0;
+      display: block;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .line.faded {
+      opacity: 0.3;  /* Transparency for lines not in the route */
+      transition: opacity 0.7s ease;
+    }
+
+    .line.highlighted {
+        background-color: gold !important; /* Gold color for the highlighted line */     
+        border-color: #d4af37 !important;
+        transition: background-color 0.3s ease, transform 0.7s ease;
+    }
+
+    .category-1 .line {
+      background-color: #FF5733;
+      border-width: 3px;
+      border-color: #5c1938;
+      border-style: solid; 
+    }
+
+    .category-2 .line {
+      background-color: #3357FF;
+      border-width: 3px;
+      border-color: #20195c;
+      border-style: solid; 
+
+    }
+
+    .category-3 .line {
+      background-color: #33FF57;
+      border-width: 3px;
+      border-color: #19495c;
+      border-style: solid; 
+    }
+
+    
+    .result-container {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: rgba(244, 250, 255, 0.3);
+      border-width: 4px;
+      border-color: rgb(255, 255, 255);
+      margin-left: 250px;
+    }
+      #result {
+      padding: 10px; /* Reduced padding */
+      font-size: 14px; /* Smaller font size */
+      background: #e9ecef;
+      border-radius: 5px;
+      color: #333;
+      display: none;
+      max-width: 1070px; /* Limiting the width of the result */
+      margin: 0px auto; /* Centers the result box */
+      background-color: rgba(244, 250, 255, 0.3);
+      border-width: 4px;
+      border-color: rgb(255, 255, 255);
+    }
+    .station-box {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: gold;
+        border-radius: 4px;
+        margin: 5px;
+    }
+
+    .start-station {
+        background-color: #7cb342;
+        color: white;
+    }
+
+    .end-station {
+        background-color: #d32f2f;
+        color: white;
+    }
+
+    .arrow {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .route-text {
+        font-size: 14px;
+        margin-top: 15px;
+        color: #333;
+    }
+    nav {
+        display: flex;
+        gap: 20px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #333;
+        min-width: 160px;
+        z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">pentaCODE</div>
+    <nav>
+        <div class="dropdown">
+            <a>Projects</a>
+            <div class="dropdown-content">
+                <a href="/movies">LinkList</a>
+                <a href="/stack">Stack</a>
+                <a href="/queuedequeue">Queue and Dequeue</a>
+                <a href="/binary">Binary Tree</a>
+                <a href="/graph">Graph</a>
+                <a href="/bubble">Sorting</a>
+
+            </div>
+        </div>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+    </nav>
+</header>
+
+  <div class="container">
+    <!-- Button Container -->
+    <div class="button-container">
+        <h1>LRT Train <br>Shortest Route Finder</h1>
+        <form id="routeForm">
+            <label for="initialTrain">Select Initial Train:</label>
+            <select id="initialTrain" name="initialTrain" required>
+                <option value="" disabled selected>Select a train</option>
+                <option value="lrt1">LRT 1</option>
+                <option value="lrt2">LRT 2</option>
+                <option value="lrt3">LRT 3</option>
+            </select>
+
+            <label for="start">Select Initial Station / Destination:</label>
+            <select id="start" name="start" required>
+                <option value="" disabled selected>Select a station</option>
+            </select>
+
+            <label for="finalTrain">Select Final Train:</label>
+            <select id="finalTrain" name="finalTrain" required>
+                <option value="" disabled selected>Select a train</option>
+                <option value="lrt1">LRT 1</option>
+                <option value="lrt2">LRT 2</option>
+                <option value="lrt3">LRT 3</option>
+            </select>
+
+            <label for="end">Select Final Station / Destination:</label>
+            <select id="end" name="end" required>
+                <option value="" disabled selected>Select a station</option>
+            </select>
+
+            <button type="submit">Find Shortest Route</button>
+        </form>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+      <!-- Category 3 (lrt 1) -->
+      
+      <div class="category category-3">
+
+        <!-- Circles Section -->
+        <div class="circle-container" style="top: 25px; left: 220px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--top: auto; --bottom: 100%; --translate-y: 0px;">Fernando Poe Jr.</div>
+        </div>
+
+        <div class="circle-container" style="top: 25px; left: 106px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--top: auto; --bottom: 100%; --translate-y: 0px;">Balintawak</div>
+        </div>
+
+        <div class="circle-container" style="top: 25px; right: 20px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--top: auto; --bottom: 100%; --translate-y: 0px;">Monumento</div>
+        </div>
+        
+        <div class="circle-container" style="top: 70px; right: 73px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">5th Avenue</div>
+        </div>
+        
+        <div class="circle-container" style="top: 106px; right: 130px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">R. Papa</div>
+        </div>
+        
+        <div class="circle-container" style="top: 130px; right: 162px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Abad Santos</div>
+        </div>
+
+        <div class="circle-container" style="top: 153px; right: 196px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Blumentritt</div>
+        </div>
+
+        <div class="circle-container" style="top: 175px; right: 242px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Tayuman</div>
+        </div>
+
+        <div class="circle-container" style="top: 198px; right: 294px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Bambang</div>
+        </div>
+
+        <div class="circle-container" style="top: 220px; right: 340px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Doroteo Jose</div>
+        </div>
+
+        <div class="circle-container" style="top: 245px; right: 390px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Carriedo</div>
+        </div>
+
+        <div class="circle-container" style="top: 270px; right: 420px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Central Terminal</div>
+        </div>
+
+        <div class="circle-container" style="top: 295px; right: 460px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">United Nations</div>
+        </div>
+
+        <div class="circle-container" style="top: 320px; right: 490px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Pedro Gil</div>
+        </div>
+
+        <div class="circle-container" style="top: 343px; right: 520px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Quirino</div>
+        </div>
+
+        <div class="circle-container" style="top: 350px; left: 120px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Vito Cruz</div>
+        </div>
+
+        <div class="circle-container" style="top: 380px; left: 80px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Gil Puyat</div>
+        </div>
+
+        <div class="circle-container" style="top: 405px; left: 40px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Libertad</div>
+        </div>
+
+        <div class="circle-container" style="top: 430px; left: 0px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">EDSA</div>
+        </div>
+
+        <div class="circle-container" style="top: 456px; right: 53px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Baclaran</div>
+        </div>
+
+        <div class="circle-container" style="top: 485px; right: 75px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 10px; --top: 5px; --translate-x: 0px; --translate-y: -30%;">Redemptorist-Aseana</div>
+        </div>
+        <div class="circle-container" style="top: 505px; right: 75px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--right: 7px; --top: 10px; --translate-x: 0px; --translate-y: -30%;">MIA Road</div>
+        </div>
+        <div class="circle-container" style="top: 525px; right: 75px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 20px; --top: -5px; --translate-x: 0px; --translate-y: -30%;">PITX</div>
+        </div>
+        <div class="circle-container" style="top: 545px; right: 75px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 27px; --top: -1px; --translate-x: 0px; --translate-y: -30%;">Ninoy Aquino Avenue</div>
+        </div>
+        <div class="circle-container" style="top: 565px; right: 75px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 25px; --top: 3px; --translate-x: 0px; --translate-y: -30%;">Dr. Santos</div>
+        </div>
+
+        <!-- Lines Section -->
+        <div class="line" 
+          style="top: 43px; left: 180px; width: 60px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Fernando Poe Jr.</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Balintawak</div>
+        </div> 
+        
+
+        <div class="line" 
+          style="top: 43px; left: 100px; width: 70px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Balintawak</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Monumento</div>
+        </div>
+ 
+        <div class="line" 
+          style="top: 61px; left: 70px; transform: rotate(-79deg); width: 40px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Monumento</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">5th Avenue</div>
+        </div>        
+        
+        <div class="line" 
+          style="top: 105px; left: 68px; transform: rotate(-72deg); width: 24px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">5th Avenue</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">R. Papa</div>
+        </div>
+
+        <div class="line" 
+          style="top: 140px; left: 71px; transform: rotate(62deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">R. Papa</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Abad Santos</div>
+        </div>
+
+        <div class="line" 
+          style="top: 160px; left: 82px; transform: rotate(63deg); width: 18px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Abad Santos</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Blumentritt</div>
+        </div>        
+        
+        <div class="line" 
+          style="top: 180px; left: 87px; transform: rotate(-83deg); width: 18px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Blumentritt</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Tayuman</div>
+        </div>
+
+        <div class="line" 
+          style="top: 200px; left: 82px; transform: rotate(-75deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Tayuman</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Bambang</div>
+        </div>
+
+        <div class="line" 
+          style="top: 225px; left: 76px; transform: rotate(-85deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Bambang</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Doroteo Jose</div>
+        </div>        
+        
+        <div class="line" 
+          style="top: 250px; left: 72px; transform: rotate(-76deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Doroteo Jose</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Carriedo</div>
+        </div>
+
+        <div class="line" 
+          style="top: 239px; left: 86px; width: 20px; background-color: orange; border-color: #d48037">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Doroteo Jose</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Recto</div>
+        </div>
+
+        <div class="line" 
+          style="top: 270px; left: 71px; transform: rotate(60deg); width: 25px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Carriedo</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Central Terminal</div>
+        </div>
+
+        <div class="line" 
+          style="top: 300px; left: 85px; transform: rotate(81deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Central Terminal</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">United Nations</div>
+        </div>        
+        
+        <div class="line" 
+          style="top: 330px; left: 97px; transform: rotate(61deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">United Nations</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Pedro Gil</div>
+        </div>
+
+        <div class="line" 
+          style="top: 350px; left: 111px; transform: rotate(56deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Pedro Gil</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Quirino</div>
+        </div>
+
+        <div class="line" 
+          style="top: 375px; left: 126px; transform: rotate(53deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Quirino</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Vito Cruz</div>
+        </div>
+
+        <div class="line" 
+          style="top: 400px; left: 138px; transform: rotate(-95deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Vito Cruz</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Gil Puyat</div>
+        </div>
+
+        <div class="line" 
+          style="top: 425px; left: 140px; transform: rotate(82deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Gil Puyat</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Libertad</div>
+        </div>
+
+        <div class="line" 
+          style="top: 450px; left: 145px; transform: rotate(78deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Libertad</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">EDSA</div>
+        </div>
+
+        <div class="line" 
+          style="top: 480px; left: 145px; transform: rotate(-70deg); width: 20px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">EDSA</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Baclaran</div>
+        </div>
+        
+        <div class="line" 
+          style="top: 510px; left: 148px; transform: rotate(52deg); width: 30px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Baclaran</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Redemptorist-Aseana</div>
+        </div>
+
+        <div class="line" 
+          style="top: 532px; left: 177px; transform: rotate(24deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Redemptorist-Aseana</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">MIA Road</div>
+        </div>
+
+        <div class="line" 
+          style="top: 552px; left: 220px; transform: rotate(24deg); width: 40px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">MIA Road</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">PITX</div>
+        </div>
+
+        <div class="line" 
+          style="top: 570px; left: 260px; transform: rotate(24deg); width: 40px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">PITX</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Ninoy Aquino Avenue</div>
+        </div>
+
+        <div class="line" 
+          style="top: 590px; left: 305px; transform: rotate(24deg); width: 40px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Ninoy Aquino Avenue</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Dr. Santos</div>
+        </div>
+
+
+        
+        
+      </div>
+      <!-- Category 1 (lrt 2) -->
+      <div class="category category-1">
+        <!-- Circles Section -->
+        <div class="circle-container" style="top: 30px; left: 83px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --left: 8px; --top: -15px; --translate-y: 0px;">Recto</div>
+        </div>
+
+        <div class="circle-container" style="top: 45px; left: 70px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --left: 1px; --bottom: -30px; --translate-y: 0px;">Legarda</div>
+        </div>
+
+        <div class="circle-container" style="top: 40px; left: 70px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --left: 8px; --top: -15px; --translate-y: 0px;">Pureza</div>
+        </div>
+
+        <div class="circle-container" style="top: 40px; left: 77px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --left: 8px; --bottom: -30px; --translate-y: 0px;">V. Mapa</div>
+        </div>
+
+        <div class="circle-container" style="top: 20px; left: 70px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --right: -10px; --top: -13px; --translate-y: 0px;">J. Ruiz</div>
+        </div>
+
+        <div class="circle-container" style="top: 5px; left: 60px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --left: 8px; --bottom: -30px; --translate-y: 0px;">Gilmore</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 15px; left: 50px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --right: -10px; --top: -13px; --translate-y: 0px;">Betty Go-Belmonte</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 30px; left: 55px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --left: 20px; --bottom: -20px; --translate-y: 0px;">Araneta Center–Cubao(LRT)</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 55px; left: 60px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --right: -20px; --top: -15px; --translate-y: 0px;">Anonas</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 67px; left: 57px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --right: -50px; --top: -15px; --translate-y: 0px;">Katipunan</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 55px; left: 60px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --right: -50px; --top: -13px; --translate-y: 0px;">Santolan</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 35px; left: 60px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --left: -10px; --bottom: -30px; --translate-y: 0px;">Marikina–Pasig</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 40px; left: 65px;">
+          <div class="circle"></div>
+          <div class="circle-text" style=" --right: -65px; --top: -5px; --translate-y: 0px;">Antipolo</div>
+        </div>
+        
+        <!-- Lines Section -->
+        <div class="line" 
+          style="top: 58px; left: 115px;  transform: rotate(27deg); width: 25px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Recto</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Legarda</div>
+        </div> 
+
+        <div class="line" 
+          style="top: 62px; left: 144px;  transform: rotate(-7deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Legarda</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Pureza</div>
+        </div>
+
+        <div class="line" 
+          style="top:58px; left: 192px;  transform: rotate(0deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Pureza</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">V. Mapa</div>
+        </div>
+
+        <div class="line" 
+          style="top:48px; left: 240px;  transform: rotate(-28deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">V. Mapa</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">J. Ruiz</div>
+        </div>
+
+
+        <div class="line" 
+          style="top: 31px; left: 278px;  transform: rotate(-24deg); width: 25px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">J. Ruiz</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Gilmore</div>
+        </div> 
+
+        <div class="line" 
+          style="top: 13px; left: 310px;  transform: rotate(-28deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Gilmore</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Betty Go-Belmonte</div>
+        </div>
+
+        <div class="line" 
+          style="top: -4px; left: 345px;  transform: rotate(-17deg); width: 45px; z-index: 2;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Betty Go-Belmonte</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Araneta Center–Cubao(LRT)</div>
+        </div>
+
+        <div class="line" 
+          style="top: -22px; left: 390px;  transform: rotate(-26deg); width: 45px;" >
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Araneta Center–Cubao(LRT)</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Anonas</div>
+        </div> 
+
+        <div class="line" 
+          style="top: -4px; left: 379px;  transform: rotate(-67deg); width: 20px;  background-color: orange; border-color: #d48037">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Araneta Center–Cubao(LRT)</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Araneta Center–Cubao(MRT)</div>
+        </div> 
+
+        <div class="line" 
+          style="top: -41px; left: 440px;  transform: rotate(-15deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Anonas</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Katipunan</div>
+        </div>
+
+        <div class="line" 
+          style="top: -42px; left: 488px;  transform: rotate(14deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Katipunan</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Santolan</div>
+        </div>
+
+        <div class="line" 
+          style="top: -27px; left: 532px;  transform: rotate(23deg); width: 40px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Santolan</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Marikina–Pasig</div>
+        </div> 
+
+        <div class="line" 
+          style="top: -18px; left: 575px;  transform: rotate(-6deg); width: 42px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Marikina–Pasig</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Antipolo</div>
+        </div>
+
+
+
+      </div>
+          
+      <!-- Category 2 (lrt 3) -->
+      <div class="category category-2">
+        <!-- Circles Section -->
+        <div class="circle-container" style="bottom: 325px; left: 275px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 25px; --top: 50%; --translate-y: -30%;">North Avenue</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 290px; left: 260px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 25px; --top: 50%; --translate-y: -20%;">Quezon Avenue</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 252px; left: 240px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: -94px; --bottom: -12px; --translate-y: -20%;">GMA–Kamuning</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 200px; left: 226px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 25px; --top: 10px; --translate-y: -20%;">Araneta Center–Cubao(MRT)</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 168px; left: 200px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 26px; --top: 6px; --translate-y: -20%;">Santolan–Annapolis</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 106px; left: 160px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 22px; --top: 4px; --translate-y: -20%;">Ortigas</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 73px; left: 95px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 25px; --top: 6px; --translate-y: -20%;">Shaw Boulevard</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 40px; left: 25px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 25px; --top: 5px; --translate-y: -20%;">Boni</div>
+        </div>
+
+        <div class="circle-container" style="bottom: 10px; right: 40px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 25px; --top: 5px; --translate-y: -20%;">Guadalupe</div>
+        </div>
+
+        <div class="circle-container" style="top: 14px; right: 115px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 20px; --top: 10px; --translate-y: -20%;">Buendia</div>
+        </div>
+
+        <div class="circle-container" style="top: 35px; right: 190px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 20px; --top: 11px; --translate-y: -20%;">Ayala</div>
+        </div>
+
+        <div class="circle-container" style="top: 60px; right: 270px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 0px; --bottom: -30px; --translate-y: -20%;">Magallanes</div>
+        </div>
+
+        <div class="circle-container" style="top: 68px; right: 379px;">
+          <div class="circle"></div>
+          <div class="circle-text" style="--left: 5px; --bottom: -30px; --translate-y: -20%;">Taft Avenue</div>
+        </div>
+
+        <!-- Lines Section -->
+        <div class="line" 
+          style="top: -290px; left: 296px;  transform: rotate(50deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">North Avenue</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Quezon Avenue</div>
+        </div> 
+
+        <div class="line" 
+          style="top: -252px; left: 325px;  transform: rotate(56deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Quezon Avenue</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">GMA–Kamuning</div>
+        </div>
+
+        <div class="line" 
+          style="top: -205px; left: 346px;  transform: rotate(60deg); width: 50px; z-index: 1;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">GMA–Kamuning</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Araneta Center–Cubao(MRT)</div>
+        </div>
+
+        <div class="line" 
+          style="top: -170px; left: 373px;  transform: rotate(59deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Araneta Center–Cubao(MRT)</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Santolan–Annapolis</div>
+        </div>
+
+
+        <div class="line" 
+          style="top: -124px; left: 376px;  transform: rotate(86deg); width: 57px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Santolan–Annapolis</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Ortigas</div>
+        </div> 
+
+        <div class="line" 
+          style="top: -72px; left: 384px;  transform: rotate(-58deg); width: 30px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Ortigas</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Shaw Boulevard</div>
+        </div>
+
+        <div class="line" 
+          style="top: -38px; left: 358px;  transform: rotate(-54deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Shaw Boulevard</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Boni</div>
+        </div>
+
+        <div class="line" 
+          style="top: -5px; left: 338px;  transform: rotate(-55deg); width: 25px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Boni</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Guadalupe</div>
+        </div> 
+
+        <div class="line" 
+          style="top: 24px; left: 307px;  transform: rotate(-39deg); width: 30px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Guadalupe</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Buendia</div>
+        </div>
+
+        <div class="line" 
+          style="top: 46px; left: 276px;  transform: rotate(-34deg); width: 30px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Buendia</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Ayala</div>
+        </div>
+
+        <div class="line" 
+          style="top: 65px; left: 247px;  transform: rotate(-34deg); width: 35px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Ayala</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Magallanes</div>
+        </div> 
+
+        <div class="line" 
+          style="top: 83px; left: 185px;  transform: rotate(-7deg); width: 55px;">
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Magallanes</div>
+          <div class="line-text" style="--right: 10px; --top: 50%; --translate-x: 0px; --translate-y: -30%;">Taft Avenue</div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Container -->
+  <div class="result-container">
+    <div id="result" class="result" style="display: none;"></div>
+  </div>
+
+  <script>
+      const trainStations = {
+          lrt1: [
+              "Fernando Poe Jr.", "Balintawak", "Monumento", "5th Avenue", 
+              "R. Papa", "Abad Santos", "Blumentritt", "Tayuman", 
+              "Bambang", "Doroteo Jose", "Carriedo", "Central Terminal", 
+              "United Nations", "Pedro Gil", "Quirino", "Vito Cruz", 
+              "Gil Puyat", "Libertad", "EDSA", "Baclaran", "Redemptorist-Aseana",
+              "MIA Road", "PITX", "Ninoy Aquino Avenue", "Dr. Santos"
+          ],
+          lrt2: [
+              "Antipolo", "Marikina–Pasig", "Santolan", "Katipunan", 
+              "Anonas", "Araneta Center–Cubao(LRT)", "Betty Go-Belmonte", 
+              "Gilmore", "J. Ruiz", "V. Mapa", "Pureza", "Legarda", 
+              "Recto"
+          ],
+          lrt3: [
+              "North Avenue", "Quezon Avenue", "GMA–Kamuning", 
+              "Araneta Center–Cubao(MRT)", "Santolan–Annapolis", 
+              "Ortigas", "Shaw Boulevard", "Boni", "Guadalupe", 
+              "Buendia", "Ayala", "Magallanes", "Taft Avenue"
+          ]
+      };
+
+      // Helper to populate stations dropdown
+      function populateStations(train, dropdownId) {
+          const dropdown = document.getElementById(dropdownId);
+          dropdown.innerHTML = '<option value="" disabled selected>Select a station</option>';
+
+          if (train in trainStations) {
+              trainStations[train].forEach(station => {
+                  const option = document.createElement('option');
+                  option.value = station;
+                  option.textContent = station;
+                  dropdown.appendChild(option);
+              });
+          }
+      }
+
+      // Event listeners to populate dropdowns based on selected train
+      document.getElementById('initialTrain').addEventListener('change', function () {
+          const train = this.value;
+          populateStations(train, 'start');
+      });
+
+      document.getElementById('finalTrain').addEventListener('change', function () {
+          const train = this.value;
+          populateStations(train, 'end');
+      });
+
+      // Function to apply the "golden", "green", and "red" classes to circles
+      function highlightStations(stationsInRoute, start, end) {
+          const circles = document.querySelectorAll('.circle-container');
+
+          circles.forEach(circleContainer => {
+              const stationText = circleContainer.querySelector('.circle-text').textContent.trim();
+              const circle = circleContainer.querySelector('.circle');
+
+              // Remove all highlighting classes first
+              circle.classList.remove('golden', 'initial-destination', 'final-destination', 'zoomed');
+              circleContainer.classList.add('faded'); // Apply transparent effect by default
+
+              if (stationsInRoute.includes(stationText)) {
+                  // Apply the golden class for stations in the shortest route
+                  circle.classList.add('golden');
+                  circle.classList.add('zoomed'); // Adding zoom effect
+                  circleContainer.classList.remove('faded'); // Remove transparent effect
+              }
+
+              if (stationText === start) {
+                  // Highlight the start station (green)
+                  circle.classList.add('initial-destination');
+                  circle.classList.remove('faded');
+              }
+
+              if (stationText === end) {
+                  // Highlight the end station (red)
+                  circle.classList.add('final-destination');
+                  circle.classList.remove('faded');
+              }
+          });
+      }
+
+      // Function to highlight lines only if both stations are in the shortest route and adjacent
+      function highlightLineForRoute(lineElement, shortestRoute) {
+          const lineTexts = lineElement.querySelectorAll('.line-text');
+          const lineStations = Array.from(lineTexts).map(textElement => textElement.textContent.trim());
+
+          // Check if both stations are part of the shortest route and are adjacent
+          if (
+              lineStations.length === 2 &&
+              shortestRoute.includes(lineStations[0]) &&
+              shortestRoute.includes(lineStations[1])
+          ) {
+              const index1 = shortestRoute.indexOf(lineStations[0]);
+              const index2 = shortestRoute.indexOf(lineStations[1]);
+
+              // Ensure the two stations are consecutive in the shortest route
+              if (Math.abs(index1 - index2) === 1) {
+                  lineElement.classList.add('highlighted'); // Highlight the line
+                  lineElement.classList.remove('faded');
+                  return;
+              }
+          }
+
+          // If the line is not part of the shortest route or stations aren't adjacent
+          lineElement.classList.remove('highlighted');
+          lineElement.classList.add('faded'); // Optionally apply a faded style
+      }
+
+      // Handle route submission and highlighting of stations and lines
+      document.getElementById('routeForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const start = document.getElementById('start').value;
+          const end = document.getElementById('end').value;
+          const resultDiv = document.getElementById('result');
+
+          if (start && end) {
+              fetch('/shortest_path', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ start, end })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.error) {
+                      resultDiv.innerHTML = `
+                          <div class="result-container error">
+                              <p>${data.error}</p>
+                          </div>
+                      `;
+                  } else {
+                      // Create boxes for each station in the path
+                      const pathHtml = data.path
+                          .map((station, index) => {
+                              let stationClass = 'station-box';
+                              if (station === start) stationClass += ' start-station';
+                              if (station === end) stationClass += ' end-station';
+
+                              return `
+                                  <div class="${stationClass}">
+                                      <span>${station}</span>
+                                  </div>
+                                  ${
+                                      index < data.path.length - 1
+                                          ? '<div class="arrow">→</div>'
+                                          : ''
+                                  }
+                              `;
+                          })
+                          .join('');
+
+                      resultDiv.innerHTML = `
+                          <div class="result-container">
+                              <h3>Shortest Route</h3>
+                              <div class="path-container">
+                                  ${pathHtml}
+                              </div>
+                              <p><strong>Distance:</strong> ${data.distance} km</p>
+                          </div>
+                          <p class="route-text">Here is the shortest path from ${start} to ${end}:</p>
+                      `;
+
+                      // Highlight the stations including the start and end stations
+                      highlightStations(data.path, start, end);
+
+                      // Highlight lines that are part of the shortest route
+                      const lineElements = document.querySelectorAll('.line');
+                      lineElements.forEach(lineElement => {
+                          highlightLineForRoute(lineElement, data.path);
+                      });
+                  }
+                  resultDiv.style.display = 'block';
+              })
+              .catch(error => {
+                  resultDiv.innerHTML = `
+                      <div class="result-container error">
+                          <p>An error occurred. Please try again.</p>
+                      </div>
+                  `;
+                  resultDiv.style.display = 'block';
+              });
+          }
+      });
+      let lastScrollTop = 0; // To keep track of the last scroll position
+      let isHeaderHidden = false; // Flag to track if the header is hidden
+
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (currentScroll > lastScrollTop && currentScroll > 80) {
+          // If scrolling down and the scroll position is greater than 100px, hide the header
+          if (!isHeaderHidden) {
+            header.classList.add('hidden');
+            header.classList.remove('visible');
+            isHeaderHidden = true; // Mark header as hidden
+          }
+        } else if (currentScroll < lastScrollTop && isHeaderHidden) {
+          // If scrolling up and header is hidden, show the header
+          header.classList.add('visible');
+          header.classList.remove('hidden');
+          isHeaderHidden = false; // Mark header as visible
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Prevent negative scroll values
+      });
+
+  </script>
+</body>
+</html>
